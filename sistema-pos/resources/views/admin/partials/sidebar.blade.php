@@ -19,6 +19,7 @@
         <nav class="pos-nav">
             <a href="{{ route('admin.pos') }}"          class="pos-nav-item {{ request()->routeIs('admin.pos')       ? 'is-active' : '' }}">⚡ Facturar</a>
             <a href="{{ route('admin.dashboard') }}"    class="pos-nav-item {{ request()->routeIs('admin.dashboard')  ? 'is-active' : '' }}">📊 Dashboard</a>
+            <a href="{{ route('admin.ventas') }}"       class="pos-nav-item {{ request()->routeIs('admin.ventas*')    ? 'is-active' : '' }}">🧾 Ventas</a>
             <a href="{{ route('products.index') }}"     class="pos-nav-item {{ request()->routeIs('products.*')       ? 'is-active' : '' }}">📦 Inventario</a>
             <a href="{{ route('admin.usuarios') }}"     class="pos-nav-item {{ request()->routeIs('admin.usuarios*')  ? 'is-active' : '' }}">👥 Usuarios</a>
             <a href="{{ route('profile.edit') }}"       class="pos-nav-item {{ request()->routeIs('profile.edit')     ? 'is-active' : '' }}">⚙️ Configuraciones</a>

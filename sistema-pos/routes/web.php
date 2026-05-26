@@ -8,6 +8,7 @@ use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\EmployerDashboardController;
 use App\Http\Controllers\AdminPosController;
 use App\Http\Controllers\AdminUsuariosController;
+use App\Http\Controllers\AdminVentasController;
 use App\Http\Controllers\Store\CartController;
 use App\Http\Controllers\Store\StoreCatalogController;
 use App\Services\CartService;
@@ -28,6 +29,11 @@ Route::prefix('cliente')->name('client.')->group(function () {
         Route::get('registro', [ClientRegisteredUserController::class, 'create'])->name('register');
         Route::post('registro', [ClientRegisteredUserController::class, 'store'])->name('register.store');
     });
+
+    // Verificación OTP (sin middleware guest, el usuario aún no está logueado)
+    Route::get('verificar',  [ClientRegisteredUserController::class, 'showVerify'])->name('verify');
+    Route::post('verificar', [ClientRegisteredUserController::class, 'verify'])->name('verify.store');
+    Route::post('reenviar',  [ClientRegisteredUserController::class, 'resend'])->name('verify.resend');
 
     Route::post('salir', [ClientAuthController::class, 'destroy'])
         ->middleware('auth')
@@ -83,6 +89,9 @@ Route::middleware(['auth', 'staff'])->group(function () {
     Route::delete('/admin/usuarios/{user}',          [AdminUsuariosController::class, 'destroy'])->name('admin.usuarios.destroy');
 
     Route::post('/admin/pos/vender', [AdminPosController::class, 'vender'])->name('admin.pos.vender');
+
+    Route::get('/admin/ventas',          [AdminVentasController::class, 'index'])->name('admin.ventas');
+    Route::get('/admin/ventas/{id}',     [AdminVentasController::class, 'show'])->name('admin.ventas.show');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
