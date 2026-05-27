@@ -9,6 +9,8 @@ use App\Http\Controllers\EmployerDashboardController;
 use App\Http\Controllers\AdminPosController;
 use App\Http\Controllers\AdminUsuariosController;
 use App\Http\Controllers\AdminVentasController;
+use App\Http\Controllers\EmployerPosController;
+use App\Http\Controllers\EmployerClientesController;
 use App\Http\Controllers\Store\CartController;
 use App\Http\Controllers\Store\StoreCatalogController;
 use App\Services\CartService;
@@ -77,6 +79,12 @@ Route::middleware(['auth', 'staff'])->group(function () {
         ->name('admin.pos');
     Route::get('/empleador/perfil', [EmployerDashboardController::class, 'index'])
         ->name('employer.dashboard');
+    Route::get('/empleador/pos',   [EmployerPosController::class, 'index'])
+        ->name('employer.pos');
+    Route::get('/empleador/clientes/crear', [EmployerClientesController::class, 'create'])
+        ->name('employer.clientes.create');
+    Route::post('/empleador/clientes',      [EmployerClientesController::class, 'store'])
+        ->name('employer.clientes.store');
 
     Route::resource('products', ProductController::class);
 

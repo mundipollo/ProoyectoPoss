@@ -2,21 +2,19 @@
     // ── Métricas del sistema ────────────────────────────────────────
     $respuestaMs = round((microtime(true) - LARAVEL_START) * 1000);
     $memoriaUsada = round(memory_get_usage() / 1024 / 1024, 1);
-    $memoriaPico  = round(memory_get_peak_usage() / 1024 / 1024, 1);
 
     // Estado de respuesta
     if ($respuestaMs < 200)      { $respColor = '#16a34a'; $respLabel = 'Rápido'; }
     elseif ($respuestaMs < 600)  { $respColor = '#b45309'; $respLabel = 'Normal'; }
     else                         { $respColor = '#dc2626'; $respLabel = 'Lento';  }
 
-    // Estado de memoria (límite PHP)
+    // Estado de memoria
     $limiteMB = (int) ini_get('memory_limit');
     $memPct   = $limiteMB > 0 ? round(($memoriaUsada / $limiteMB) * 100) : 0;
     if ($memPct < 50)      { $memColor = '#16a34a'; }
     elseif ($memPct < 80)  { $memColor = '#b45309'; }
     else                   { $memColor = '#dc2626'; }
 
-    // Número de queries ejecutadas en esta petición
     $queryCount = count(\Illuminate\Support\Facades\DB::getQueryLog());
 @endphp
 
@@ -46,15 +44,12 @@
 <aside class="pos-sidebar">
     <div style="flex:1;overflow-y:auto">
         <p class="pos-brand">Facturación POSS</p>
-        <p class="pos-subtitle">Operación textil diaria</p>
+        <p class="pos-subtitle">Panel de empleado</p>
 
         <nav class="pos-nav">
-            <a href="{{ route('admin.pos') }}"       class="pos-nav-item {{ request()->routeIs('admin.pos')      ? 'is-active' : '' }}">⚡ Facturar</a>
-            <a href="{{ route('admin.dashboard') }}" class="pos-nav-item {{ request()->routeIs('admin.dashboard') ? 'is-active' : '' }}">📊 Dashboard</a>
-            <a href="{{ route('admin.ventas') }}"    class="pos-nav-item {{ request()->routeIs('admin.ventas*')   ? 'is-active' : '' }}">🧾 Ventas</a>
-            <a href="{{ route('products.index') }}"  class="pos-nav-item {{ request()->routeIs('products.*')      ? 'is-active' : '' }}">📦 Inventario</a>
-            <a href="{{ route('admin.usuarios') }}"  class="pos-nav-item {{ request()->routeIs('admin.usuarios*') ? 'is-active' : '' }}">👥 Usuarios</a>
-            <a href="{{ route('profile.edit') }}"    class="pos-nav-item {{ request()->routeIs('profile.edit')    ? 'is-active' : '' }}">⚙️ Configuraciones</a>
+            <a href="{{ route('employer.dashboard') }}" class="pos-nav-item {{ request()->routeIs('employer.dashboard') ? 'is-active' : '' }}">📊 Dashboard</a>
+            <a href="{{ route('employer.pos') }}"       class="pos-nav-item {{ request()->routeIs('employer.pos')       ? 'is-active' : '' }}">⚡ Facturar</a>
+            <a href="{{ route('employer.clientes.create') }}" class="pos-nav-item {{ request()->routeIs('employer.clientes.*') ? 'is-active' : '' }}">👤 Registrar cliente</a>
         </nav>
 
         {{-- ── Widget de telemetría ────────────────────────────────── --}}
@@ -102,7 +97,7 @@
     </div>
 
     <div class="pos-sidebar-footer">
-        <p>Tienda en línea: habilitada</p>
+        <p>{{ Auth::user()->name }}</p>
         <form method="POST" action="{{ route('logout') }}">
             @csrf
             <button type="submit" class="pos-logout-btn">↩ Cerrar sesión</button>
