@@ -74,7 +74,14 @@ class EmployerDashboardController extends Controller
                 's.fecha',
                 's.total',
                 's.estado',
-                DB::raw("COALESCE(u.name, 'Mostrador') as vendedor"),
+                DB::raw("
+                    CASE
+                        WHEN s.observaciones LIKE 'Venta POS - %'
+                            THEN TRIM(SUBSTRING(s.observaciones FROM 13))
+                        WHEN s.observaciones = 'Venta POS' THEN 'Mostrador'
+                        ELSE COALESCE(u.name, 'Cliente')
+                    END as vendedor
+                "),
                 DB::raw("(SELECT metodo FROM sale_payments WHERE sale_id = s.id ORDER BY id DESC LIMIT 1) as metodo")
             )
             ->orderByDesc('s.fecha')

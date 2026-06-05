@@ -103,7 +103,8 @@ class CartController extends Controller
                 $items[] = [
                     'sale_id'         => $saleId,
                     'product_id'      => $line->product->id,
-                    'nombre'          => $line->product->nombre,
+                    'nombre'          => $line->product->nombre
+                                         . ($line->talla ? ' (Talla '.$line->talla.')' : ''),
                     'cantidad'        => $line->quantity,
                     'precio_unitario' => $line->product->precio,
                     'subtotal'        => $line->subtotal,
@@ -148,6 +149,9 @@ class CartController extends Controller
             ->with('status', 'Pago simulado completado correctamente.');
     }
 
+    /** Categorías que NO necesitan talla */
+    private const SIN_TALLA = ['Accesorios'];
+
     public function add(Request $request, Product $product): RedirectResponse|JsonResponse
     {
         if ($product->estado !== 'activo' || $product->stock_actual < 1) {
@@ -158,8 +162,31 @@ class CartController extends Controller
             return back()->with('error', 'Este producto no está disponible.');
         }
 
+        // Validar talla: solo si el producto tiene tallas configuradas en BD
+        $categoriaNombre = $product->category?->nombre ?? '';
+        $esPrenda        = ! in_array($categoriaNombre, self::SIN_TALLA, true);
+        $tallasProd      = $product->tallas ?? [];
+        if (is_string($tallasProd)) $tallasProd = json_decode($tallasProd, true) ?? [];
+        $necesitaTalla   = $esPrenda && count($tallasProd) > 0;
+        $talla           = $request->input('talla');
+
+        if ($necesitaTalla && empty($talla)) {
+            if ($request->expectsJson()) {
+                return response()->json(['error' => 'Por favor selecciona una talla antes de agregar.'], 422);
+            }
+            return back()->with('error', 'Por favor selecciona una talla antes de agregar.');
+        }
+
+        if ($talla && ! in_array($talla, ['XS','S','M','L','XL'], true)) {
+            if ($request->expectsJson()) {
+                return response()->json(['error' => 'Talla no válida.'], 422);
+            }
+            return back()->with('error', 'Talla no válida.');
+        }
+
         $quantity = (int) $request->input('quantity', 1);
-        $inCart = ($this->cart->items()[$product->id] ?? 0) + max(1, $quantity);
+        $current  = $this->cart->items()[$product->id] ?? ['qty' => 0];
+        $inCart   = (is_array($current) ? ($current['qty'] ?? 0) : (int) $current) + max(1, $quantity);
 
         if ($inCart > $product->stock_actual) {
             if ($request->expectsJson()) {
@@ -169,7 +196,7 @@ class CartController extends Controller
             return back()->with('error', 'No hay suficiente stock disponible.');
         }
 
-        $this->cart->add($product, $quantity);
+        $this->cart->add($product, $quantity, $talla ?: null);
         session()->forget('store_last_order');
 
         if ($request->expectsJson()) {

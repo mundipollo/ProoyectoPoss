@@ -50,8 +50,9 @@ Route::middleware(['auth', 'client'])->group(function () {
     Route::delete('/carrito/{product}', [CartController::class, 'remove'])->name('store.cart.remove');
 });
 
+// El staff-login ahora redirige al login unificado
 Route::get('/staff-login', function () {
-    return view('auth.staff-login');
+    return redirect()->route('client.login');
 })->name('staff.login');
 
 Route::get('/dashboard', function () {

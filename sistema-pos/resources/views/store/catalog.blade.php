@@ -15,7 +15,25 @@
     </section>
 
     <section class="px-6 md:px-12 lg:px-20 py-12 md:py-16 reveal">
+        {{-- ── Filtros de género ─────────────────────────────────────── --}}
+        <div style="display:flex;gap:10px;margin-bottom:18px;flex-wrap:wrap">
+            <a href="{{ route('store.catalog', array_merge(request()->except('genero','page'), [])) }}"
+               style="padding:9px 22px;border-radius:999px;font-size:14px;font-weight:600;text-decoration:none;border:2px solid {{ !in_array($generoActivo,['hombre','mujer']) ? '#111827' : '#d1d5db' }};background:{{ !in_array($generoActivo,['hombre','mujer']) ? '#111827' : '#fff' }};color:{{ !in_array($generoActivo,['hombre','mujer']) ? '#fff' : '#374151' }};transition:.2s">
+                Todos
+            </a>
+            <a href="{{ route('store.catalog', array_merge(request()->except('genero','page'), ['genero'=>'hombre'])) }}"
+               style="padding:9px 22px;border-radius:999px;font-size:14px;font-weight:600;text-decoration:none;border:2px solid {{ $generoActivo==='hombre' ? '#111827' : '#d1d5db' }};background:{{ $generoActivo==='hombre' ? '#111827' : '#fff' }};color:{{ $generoActivo==='hombre' ? '#fff' : '#374151' }};transition:.2s">
+                👔 Hombre
+            </a>
+            <a href="{{ route('store.catalog', array_merge(request()->except('genero','page'), ['genero'=>'mujer'])) }}"
+               style="padding:9px 22px;border-radius:999px;font-size:14px;font-weight:600;text-decoration:none;border:2px solid {{ $generoActivo==='mujer' ? '#111827' : '#d1d5db' }};background:{{ $generoActivo==='mujer' ? '#111827' : '#fff' }};color:{{ $generoActivo==='mujer' ? '#fff' : '#374151' }};transition:.2s">
+                👗 Mujer
+            </a>
+        </div>
+
+        {{-- ── Buscador + categoría ──────────────────────────────────── --}}
         <form method="GET" action="{{ route('store.catalog') }}" class="mb-10 flex flex-col md:flex-row gap-3 max-w-4xl">
+            @if($generoActivo)<input type="hidden" name="genero" value="{{ $generoActivo }}">@endif
             <input
                 type="search"
                 name="q"
@@ -54,7 +72,9 @@
                 <article class="scroll-card product-card flex flex-col">
                     <div class="thumb">
                         <img
-                            src="{{ \App\Support\StoreCatalogImages::forCategory($product->category->nombre) }}"
+                            src="{{ $product->imagen
+                                ? asset('storage/' . $product->imagen)
+                                : \App\Support\StoreCatalogImages::forProduct($product->sku, $product->id, $product->category->nombre ?? null) }}"
                             alt="{{ $product->nombre }}"
                             loading="lazy"
                         >
@@ -70,14 +90,45 @@
                         <p class="text-xs text-neutral-500 mt-1">Stock: {{ $product->stock_actual }}</p>
 
                         <div class="mt-4 pt-4 border-t border-neutral-100">
+
+                            {{-- ── Tallas: visible para TODOS (informativo) ──────── --}}
+                            @php
+                                $esPrenda   = $product->category?->nombre !== 'Accesorios';
+                                $tallasProd = $product->tallas ?? [];
+                                if (is_string($tallasProd)) $tallasProd = json_decode($tallasProd, true) ?? [];
+                                $hayTallas  = $esPrenda && count($tallasProd) > 0;
+                            @endphp
+                            @if($hayTallas)
+                                <div style="margin-bottom:12px">
+                                    <p style="font-size:11px;color:#6b7280;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:7px">Talla disponible</p>
+                                    <div style="display:flex;gap:5px;flex-wrap:wrap">
+                                        @foreach($tallasProd as $t)
+                                            <button type="button"
+                                                class="talla-chip-btn"
+                                                data-pid="{{ $product->id }}"
+                                                data-talla="{{ $t }}">
+                                                {{ $t }}
+                                            </button>
+                                        @endforeach
+                                    </div>
+                                    <p class="talla-error" id="talla-err-{{ $product->id }}"
+                                       style="display:none;font-size:11px;color:#dc2626;margin-top:5px;font-weight:600">
+                                        ⚠ Selecciona una talla primero
+                                    </p>
+                                </div>
+                            @endif
+
+                            {{-- ── Botón de compra: solo clientes logueados ──────── --}}
                             @auth
                                 @if (auth()->user()->isCliente())
                                     @if ($product->stock_actual > 0)
-                                        <form method="POST" action="{{ route('store.cart.add', $product) }}" class="flex gap-2 js-add-form">
+                                        <form method="POST" action="{{ route('store.cart.add', $product) }}" class="flex gap-2 js-add-form" id="form-prod-{{ $product->id }}">
                                             @csrf
+                                            {{-- Solo requiere talla si el producto tiene tallas configuradas --}}
+                                            <input type="hidden" name="talla" id="talla-val-{{ $product->id }}" value="{{ $hayTallas ? '' : '' }}">
                                             <input type="number" name="quantity" value="1" min="1" max="{{ $product->stock_actual }}" class="w-14 rounded-full border border-neutral-300 px-2 py-2 text-sm text-center">
                                             <button type="submit" class="flex-1 pill-btn pill-btn-primary text-sm py-2">
-                                                Agregar
+                                                Agregar al carrito
                                             </button>
                                         </form>
                                     @else
@@ -85,10 +136,16 @@
                                     @endif
                                 @endif
                             @else
-                                <a href="{{ route('client.login') }}" class="block w-full text-center pill-btn text-sm py-2.5">
-                                    Ingresar para comprar
-                                </a>
+                                {{-- Invitado: enlace de login --}}
+                                @if ($product->stock_actual > 0)
+                                    <a href="{{ route('client.login') }}" class="block w-full text-center pill-btn text-sm py-2.5">
+                                        Ingresar para comprar
+                                    </a>
+                                @else
+                                    <p class="text-sm text-neutral-500">Agotado</p>
+                                @endif
                             @endauth
+
                         </div>
                     </div>
                 </article>
@@ -105,9 +162,80 @@
     </section>
 @endsection
 
+@push('styles')
+<style>
+/* ── Botones de talla ──────────────────────────────────────────────── */
+.talla-chip-btn {
+    padding: 5px 10px;
+    border: 1.5px solid #d1d5db;
+    border-radius: 7px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #6b7280;
+    background: #fff;
+    cursor: pointer;
+    transition: all .15s ease;
+    line-height: 1;
+}
+.talla-chip-btn:hover {
+    border-color: #6b7280;
+    color: #111827;
+}
+.talla-chip-btn.is-selected {
+    border-color: #111827;
+    background: #111827;
+    color: #fff;
+}
+</style>
+@endpush
+
 @push('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', function () {
+
+    /* ── Botones de talla: toggle + sincronizar con formulario ─────── */
+    document.querySelectorAll('.talla-chip-btn').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            const pid   = btn.dataset.pid;
+            const talla = btn.dataset.talla;
+
+            // Deseleccionar otros botones del mismo producto
+            document.querySelectorAll('.talla-chip-btn[data-pid="' + pid + '"]').forEach(function (b) {
+                b.classList.remove('is-selected');
+            });
+            btn.classList.add('is-selected');
+
+            // Si existe el campo oculto del formulario, sincronizarlo
+            const hiddenInput = document.getElementById('talla-val-' + pid);
+            if (hiddenInput) hiddenInput.value = talla;
+
+            // Ocultar el error de talla si estaba visible
+            const errEl = document.getElementById('talla-err-' + pid);
+            if (errEl) errEl.style.display = 'none';
+        });
+    });
+
+    /* ── Validar talla antes de enviar formulario ───────────────────── */
+    document.querySelectorAll('.js-add-form').forEach(function (form) {
+        form.addEventListener('submit', function (e) {
+            const hiddenTalla = form.querySelector('input[name="talla"]');
+            if (!hiddenTalla) return;
+
+            // Si el campo está vacío y no es accesorio (valor vacío = sin talla requerida)
+            const pid = form.id.replace('form-prod-', '');
+            const tallaButtons = document.querySelectorAll('.talla-chip-btn[data-pid="' + pid + '"]');
+            if (tallaButtons.length > 0 && !hiddenTalla.value) {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                const errEl = document.getElementById('talla-err-' + pid);
+                if (errEl) {
+                    errEl.style.display = 'block';
+                    setTimeout(function () { errEl.style.display = 'none'; }, 3500);
+                }
+            }
+        }, true);
+    });
+
     function showToast(message, type) {
         const old = document.getElementById('ajax-toast');
         if (old) old.remove();

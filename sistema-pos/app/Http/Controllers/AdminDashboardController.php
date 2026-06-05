@@ -143,7 +143,17 @@ class AdminDashboardController extends Controller
         return DB::table('sales as s')
             ->leftJoin('customers as c', 'c.id', '=', 's.customer_id')
             ->leftJoin('users as u', 'u.id', '=', 's.user_id')
-            ->select('s.numero_venta', 's.fecha', 's.total', 's.estado', DB::raw('COALESCE(c.nombre, u.name, \'Cliente\') as cliente'))
+            ->select('s.numero_venta', 's.fecha', 's.total', 's.estado',
+                DB::raw("
+                    CASE
+                        WHEN c.nombre IS NOT NULL THEN c.nombre
+                        WHEN s.observaciones LIKE 'Venta POS - %'
+                            THEN TRIM(SUBSTRING(s.observaciones FROM 13))
+                        WHEN s.observaciones = 'Venta POS' THEN 'Mostrador'
+                        ELSE COALESCE(u.name, 'Cliente')
+                    END as cliente
+                ")
+            )
             ->orderByDesc('s.fecha')
             ->limit(8)
             ->get()

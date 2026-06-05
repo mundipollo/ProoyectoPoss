@@ -62,6 +62,11 @@
                                     <td class="py-5 px-5">
                                         <p class="font-medium text-base">{{ $line->product->nombre }}</p>
                                         <p class="text-xs text-neutral-500 mt-1">{{ $line->product->sku }} · {{ $line->product->category->nombre }}</p>
+                                        @if(!empty($line->talla))
+                                            <span style="display:inline-block;margin-top:5px;padding:2px 10px;border:1.5px solid #111827;border-radius:6px;font-size:11px;font-weight:700;color:#111827;letter-spacing:.04em">
+                                                Talla {{ $line->talla }}
+                                            </span>
+                                        @endif
                                     </td>
                                     <td class="py-5 px-5 font-medium">${{ number_format($line->product->precio, 0, ',', '.') }}</td>
                                     <td class="py-5 px-5">

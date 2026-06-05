@@ -11,6 +11,7 @@ class Product extends Model
         'sku',
         'nombre',
         'descripcion',
+        'imagen',
         'category_id',
         'brand_id',
         'costo',
@@ -18,6 +19,12 @@ class Product extends Model
         'stock_actual',
         'stock_minimo',
         'estado',
+        'genero',
+        'tallas',
+    ];
+
+    protected $casts = [
+        'tallas' => 'array',
     ];
 
     public function category(): BelongsTo

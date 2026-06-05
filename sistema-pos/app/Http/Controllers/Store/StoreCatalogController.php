@@ -33,13 +33,20 @@ class StoreCatalogController extends Controller
             });
         }
 
-        $products = $query->paginate(12)->withQueryString();
+        // Filtro de género: hombre/mujer incluye también los unisex
+        $genero = $request->string('genero')->toString();
+        if (in_array($genero, ['hombre', 'mujer'])) {
+            $query->whereIn('genero', [$genero, 'unisex']);
+        }
+
+        $products   = $query->paginate(12)->withQueryString();
         $categories = Category::orderBy('nombre')->pluck('nombre');
 
         return view('store.catalog', [
-            'products' => $products,
+            'products'   => $products,
             'categories' => $categories,
-            'cartCount' => $this->cart->count(),
+            'generoActivo' => $genero,
+            'cartCount'  => $this->cart->count(),
         ]);
     }
 }

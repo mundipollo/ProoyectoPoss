@@ -103,16 +103,28 @@
             display: block;
         }
         .hombre-card .meta {
-            padding: 14px 16px 16px;
+            padding: 16px 18px 20px;
         }
         .hombre-card .meta p {
-            font-size: 12px;
-            color: rgba(255,255,255,.72);
-            margin-bottom: 4px;
+            font-size: 14px;
+            font-weight: 600;
+            color: rgba(255,255,255,.65);
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: .06em;
         }
         .hombre-card .meta h3 {
-            font-size: 20px;
-            line-height: 1.2;
+            font-size: 22px;
+            line-height: 1.25;
+            font-weight: 700;
+            color: #fff;
+        }
+        .hombre-card .meta small {
+            display: block;
+            font-size: 13px;
+            color: rgba(255,255,255,.5);
+            margin-top: 5px;
+            line-height: 1.4;
         }
         @keyframes hombreRio {
             from { transform: translateX(0); }
@@ -139,6 +151,48 @@
             to { transform: translateX(calc(-50% - 8px)); }
         }
         @keyframes rise { to { opacity: 1; transform: translateY(0); } }
+
+        /* ── Tarjetas clickeables ──────────────────────────────────────── */
+        .hombre-card {
+            cursor: pointer;
+            transition: transform .25s ease, box-shadow .25s ease;
+        }
+        .hombre-card:hover {
+            transform: translateY(-4px) scale(1.015);
+            box-shadow: 0 16px 40px rgba(0,0,0,.35);
+        }
+        .hombre-card::after {
+            content: 'Ver en tienda →';
+            position: absolute;
+            bottom: 12px;
+            right: 14px;
+            background: #fff;
+            color: #111827;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 5px 11px;
+            border-radius: 999px;
+            opacity: 0;
+            transition: opacity .2s ease;
+            pointer-events: none;
+        }
+        .hombre-card { position: relative; }
+        .hombre-card:hover::after { opacity: 1; }
+
+        /* Novedades */
+        #products .scroll-card { cursor: pointer; }
+        #products .scroll-card:hover img { transform: scale(1.03); transition: transform .4s ease; }
+        #products .scroll-card img { transition: transform .4s ease; }
+
+        /* Accesorios */
+        #accessories .scroll-card {
+            cursor: pointer;
+            transition: border-color .2s ease, box-shadow .2s ease;
+        }
+        #accessories .scroll-card:hover {
+            border-color: #111827;
+            box-shadow: 0 4px 20px rgba(0,0,0,.08);
+        }
     </style>
 </head>
 <body class="bg-white text-neutral-900 antialiased">
@@ -208,27 +262,27 @@
             <div id="hombre-slider" class="hombre-slider-wrap">
                 <div class="hombre-marquee">
                     <div class="hombre-marquee-track">
-                        <article class="hombre-card hombre-item"><img src="https://images.unsplash.com/photo-1490578474895-699cd4e2cf59?q=80&w=1200" alt="Camisas para hombre"><div class="meta"><p>Camisas</p><h3>Cortes clásicos y urbanos</h3></div></article>
-                        <article class="hombre-card hombre-item"><img src="https://images.unsplash.com/photo-1488161628813-04466f872be2?q=80&w=1200" alt="Pantalones para hombre"><div class="meta"><p>Pantalones</p><h3>Comodidad con estilo moderno</h3></div></article>
-                        <article class="hombre-card hombre-item"><img src="https://images.pexels.com/photos/2081199/pexels-photo-2081199.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Bolsos de mano para hombre"><div class="meta"><p>Bolsos de mano</p><h3>Funcionales para el día a día</h3></div></article>
-                        <article class="hombre-card hombre-item"><img src="https://images.unsplash.com/photo-1521369909029-2afed882baee?q=80&w=1200" alt="Gorras para hombre"><div class="meta"><p>Gorras</p><h3>Toque urbano para cada look</h3></div></article>
-                        <article class="hombre-card hombre-item"><img src="https://images.unsplash.com/photo-1617127365659-c47fa864d8bc?q=80&w=1200" alt="Sacos para hombre"><div class="meta"><p>Sacos</p><h3>Elegancia casual y versátil</h3></div></article>
-                        <article class="hombre-card hombre-item"><img src="https://images.unsplash.com/photo-1539533113208-f6df8cc8b543?q=80&w=1200" alt="Outfit para hombre"><div class="meta"><p>Outfits</p><h3>Combinaciones listas para usar</h3></div></article>
-                        <article class="hombre-card hombre-item"><img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=1200" alt="Chaquetas para hombre"><div class="meta"><p>Chaquetas</p><h3>Capas modernas para temporada</h3></div></article>
-                        <article class="hombre-card hombre-item"><img src="https://images.unsplash.com/photo-1522312346375-d1a52e2b99b3?q=80&w=1200" alt="Relojes para hombre"><div class="meta"><p>Relojes</p><h3>Precisión y estilo en tu muñeca</h3></div></article>
-                        <article class="hombre-card hombre-item"><img src="https://images.unsplash.com/photo-1619119069152-a2b331eb392a?q=80&w=1200" alt="Manillas para hombre"><div class="meta"><p>Manillas</p><h3>Detalles que elevan el look</h3></div></article>
-                        <article class="hombre-card hombre-item"><img src="https://images.unsplash.com/photo-1460353581641-37baddab0fa2?q=80&w=1200" alt="Calzado para hombre"><div class="meta"><p>Calzado</p><h3>Estilo y confort diario</h3></div></article>
+                        <article class="hombre-card hombre-item"><img src="https://images.unsplash.com/photo-1490578474895-699cd4e2cf59?q=80&w=1200" alt="Camisas para hombre"><div class="meta"><p>Camisas</p><h3>Cortes clásicos y urbanos</h3><small>Básica blanca, polo piqué y más</small></div></article>
+                        <article class="hombre-card hombre-item"><img src="https://images.unsplash.com/photo-1488161628813-04466f872be2?q=80&w=1200" alt="Pantalones para hombre"><div class="meta"><p>Pantalones</p><h3>Skinny, chino y cargo</h3><small>Jean clásico · bermuda denim · jogger</small></div></article>
+                        <article class="hombre-card hombre-item"><img src="https://images.pexels.com/photos/2081199/pexels-photo-2081199.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Bolsos de mano para hombre"><div class="meta"><p>Accesorios</p><h3>Bolsos, gorras y cinturones</h3><small>Tote lona · trucker denim · cuero</small></div></article>
+                        <article class="hombre-card hombre-item"><img src="https://images.unsplash.com/photo-1521369909029-2afed882baee?q=80&w=1200" alt="Gorras para hombre"><div class="meta"><p>Gorras</p><h3>Toque urbano para cada look</h3><small>Trucker denim · gorro beanie invierno</small></div></article>
+                        <article class="hombre-card hombre-item"><img src="https://images.unsplash.com/photo-1617127365659-c47fa864d8bc?q=80&w=1200" alt="Sacos para hombre"><div class="meta"><p>Chaquetas</p><h3>Elegancia casual y versátil</h3><small>Jean oversize · cardigan lana · bomber</small></div></article>
+                        <article class="hombre-card hombre-item"><img src="https://images.unsplash.com/photo-1539533113208-f6df8cc8b543?q=80&w=1200" alt="Outfit para hombre"><div class="meta"><p>Outfits</p><h3>Combinaciones listas para usar</h3><small>Looks completos en tendencia 2026</small></div></article>
+                        <article class="hombre-card hombre-item"><img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=1200" alt="Chaquetas para hombre"><div class="meta"><p>Chaquetas</p><h3>Capas modernas para temporada</h3><small>Cortavientos · abrigo camel · chaleco</small></div></article>
+                        <article class="hombre-card hombre-item"><img src="https://images.unsplash.com/photo-1522312346375-d1a52e2b99b3?q=80&w=1200" alt="Relojes para hombre"><div class="meta"><p>Accesorios</p><h3>Bufandas y guantes</h3><small>Lana mixta · touch screen</small></div></article>
+                        <article class="hombre-card hombre-item"><img src="https://images.unsplash.com/photo-1619119069152-a2b331eb392a?q=80&w=1200" alt="Ropa deportiva para hombre"><div class="meta"><p>Ropa deportiva</p><h3>Short, pants y camiseta</h3><small>Running · compresión · yoga</small></div></article>
+                        <article class="hombre-card hombre-item"><img src="https://images.unsplash.com/photo-1460353581641-37baddab0fa2?q=80&w=1200" alt="Camiseta para hombre"><div class="meta"><p>Camisetas</p><h3>Oversize, dry-fit y básica</h3><small>Algodón · tie-dye · manga larga</small></div></article>
 
-                        <article class="hombre-card hombre-item"><img src="https://images.unsplash.com/photo-1490578474895-699cd4e2cf59?q=80&w=1200" alt="Camisas para hombre"><div class="meta"><p>Camisas</p><h3>Cortes clásicos y urbanos</h3></div></article>
-                        <article class="hombre-card hombre-item"><img src="https://images.unsplash.com/photo-1488161628813-04466f872be2?q=80&w=1200" alt="Pantalones para hombre"><div class="meta"><p>Pantalones</p><h3>Comodidad con estilo moderno</h3></div></article>
-                        <article class="hombre-card hombre-item"><img src="https://images.pexels.com/photos/2081199/pexels-photo-2081199.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Bolsos de mano para hombre"><div class="meta"><p>Bolsos de mano</p><h3>Funcionales para el día a día</h3></div></article>
-                        <article class="hombre-card hombre-item"><img src="https://images.unsplash.com/photo-1521369909029-2afed882baee?q=80&w=1200" alt="Gorras para hombre"><div class="meta"><p>Gorras</p><h3>Toque urbano para cada look</h3></div></article>
-                        <article class="hombre-card hombre-item"><img src="https://images.unsplash.com/photo-1617127365659-c47fa864d8bc?q=80&w=1200" alt="Sacos para hombre"><div class="meta"><p>Sacos</p><h3>Elegancia casual y versátil</h3></div></article>
-                        <article class="hombre-card hombre-item"><img src="https://images.unsplash.com/photo-1539533113208-f6df8cc8b543?q=80&w=1200" alt="Outfit para hombre"><div class="meta"><p>Outfits</p><h3>Combinaciones listas para usar</h3></div></article>
-                        <article class="hombre-card hombre-item"><img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=1200" alt="Chaquetas para hombre"><div class="meta"><p>Chaquetas</p><h3>Capas modernas para temporada</h3></div></article>
-                        <article class="hombre-card hombre-item"><img src="https://images.unsplash.com/photo-1522312346375-d1a52e2b99b3?q=80&w=1200" alt="Relojes para hombre"><div class="meta"><p>Relojes</p><h3>Precisión y estilo en tu muñeca</h3></div></article>
-                        <article class="hombre-card hombre-item"><img src="https://images.unsplash.com/photo-1619119069152-a2b331eb392a?q=80&w=1200" alt="Manillas para hombre"><div class="meta"><p>Manillas</p><h3>Detalles que elevan el look</h3></div></article>
-                        <article class="hombre-card hombre-item"><img src="https://images.unsplash.com/photo-1460353581641-37baddab0fa2?q=80&w=1200" alt="Calzado para hombre"><div class="meta"><p>Calzado</p><h3>Estilo y confort diario</h3></div></article>
+                        <article class="hombre-card hombre-item"><img src="https://images.unsplash.com/photo-1490578474895-699cd4e2cf59?q=80&w=1200" alt="Camisas para hombre"><div class="meta"><p>Camisas</p><h3>Cortes clásicos y urbanos</h3><small>Básica blanca, polo piqué y más</small></div></article>
+                        <article class="hombre-card hombre-item"><img src="https://images.unsplash.com/photo-1488161628813-04466f872be2?q=80&w=1200" alt="Pantalones para hombre"><div class="meta"><p>Pantalones</p><h3>Skinny, chino y cargo</h3><small>Jean clásico · bermuda denim · jogger</small></div></article>
+                        <article class="hombre-card hombre-item"><img src="https://images.pexels.com/photos/2081199/pexels-photo-2081199.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Bolsos de mano para hombre"><div class="meta"><p>Accesorios</p><h3>Bolsos, gorras y cinturones</h3><small>Tote lona · trucker denim · cuero</small></div></article>
+                        <article class="hombre-card hombre-item"><img src="https://images.unsplash.com/photo-1521369909029-2afed882baee?q=80&w=1200" alt="Gorras para hombre"><div class="meta"><p>Gorras</p><h3>Toque urbano para cada look</h3><small>Trucker denim · gorro beanie invierno</small></div></article>
+                        <article class="hombre-card hombre-item"><img src="https://images.unsplash.com/photo-1617127365659-c47fa864d8bc?q=80&w=1200" alt="Sacos para hombre"><div class="meta"><p>Chaquetas</p><h3>Elegancia casual y versátil</h3><small>Jean oversize · cardigan lana · bomber</small></div></article>
+                        <article class="hombre-card hombre-item"><img src="https://images.unsplash.com/photo-1539533113208-f6df8cc8b543?q=80&w=1200" alt="Outfit para hombre"><div class="meta"><p>Outfits</p><h3>Combinaciones listas para usar</h3><small>Looks completos en tendencia 2026</small></div></article>
+                        <article class="hombre-card hombre-item"><img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=1200" alt="Chaquetas para hombre"><div class="meta"><p>Chaquetas</p><h3>Capas modernas para temporada</h3><small>Cortavientos · abrigo camel · chaleco</small></div></article>
+                        <article class="hombre-card hombre-item"><img src="https://images.unsplash.com/photo-1522312346375-d1a52e2b99b3?q=80&w=1200" alt="Relojes para hombre"><div class="meta"><p>Accesorios</p><h3>Bufandas y guantes</h3><small>Lana mixta · touch screen</small></div></article>
+                        <article class="hombre-card hombre-item"><img src="https://images.unsplash.com/photo-1619119069152-a2b331eb392a?q=80&w=1200" alt="Ropa deportiva para hombre"><div class="meta"><p>Ropa deportiva</p><h3>Short, pants y camiseta</h3><small>Running · compresión · yoga</small></div></article>
+                        <article class="hombre-card hombre-item"><img src="https://images.unsplash.com/photo-1460353581641-37baddab0fa2?q=80&w=1200" alt="Camiseta para hombre"><div class="meta"><p>Camisetas</p><h3>Oversize, dry-fit y básica</h3><small>Algodón · tie-dye · manga larga</small></div></article>
                     </div>
                 </div>
             </div>
@@ -238,27 +292,27 @@
             <h2 class="text-3xl md:text-5xl font-medium tracking-tight mb-10">Mujer</h2>
             <div class="mujer-marquee">
                 <div class="mujer-marquee-track">
-                    <article class="hombre-card mujer-item"><img src="https://images.unsplash.com/photo-1551232864-3f0890e580d9?q=80&w=900" alt="Camisas para mujer"><div class="meta"><p>Camisas</p><h3>Corte elegante y versátil</h3></div></article>
-                    <article class="hombre-card mujer-item"><img src="https://images.unsplash.com/photo-1475180098004-ca77a66827be?q=80&w=900" alt="Pantalones para mujer"><div class="meta"><p>Pantalones</p><h3>Comodidad con estilo diario</h3></div></article>
-                    <article class="hombre-card mujer-item"><img src="https://images.unsplash.com/photo-1584917865442-de89df76afd3?q=80&w=900" alt="Bolso de mano para mujer"><div class="meta"><p>Bolsos de mano</p><h3>Diseño chic y funcional</h3></div></article>
-                    <article class="hombre-card mujer-item"><img src="https://images.unsplash.com/photo-1635767798638-3e25273a8236?q=80&w=900" alt="Cadenas para mujer"><div class="meta"><p>Cadenas</p><h3>Brillo sutil que resalta</h3></div></article>
-                    <article class="hombre-card mujer-item"><img src="https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?q=80&w=900" alt="Joyería para mujer"><div class="meta"><p>Joyería</p><h3>Detalles finos para tu look</h3></div></article>
-                    <article class="hombre-card mujer-item"><img src="https://images.unsplash.com/photo-1602173574767-37ac01994b2a?q=80&w=900" alt="Pulseras para mujer"><div class="meta"><p>Pulseras</p><h3>Tendencia para cada ocasión</h3></div></article>
-                    <article class="hombre-card mujer-item"><img src="https://images.unsplash.com/photo-1591047139829-d91aecb6caea?q=80&w=900" alt="Sacos para mujer"><div class="meta"><p>Sacos</p><h3>Capas con estilo moderno</h3></div></article>
-                    <article class="hombre-card mujer-item"><img src="https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?q=80&w=900" alt="Vestidos para mujer"><div class="meta"><p>Vestidos</p><h3>Looks listos para destacar</h3></div></article>
-                    <article class="hombre-card mujer-item"><img src="https://images.unsplash.com/photo-1496747611176-843222e1e57c?q=80&w=900" alt="Outfit femenino"><div class="meta"><p>Outfits</p><h3>Combinaciones con personalidad</h3></div></article>
-                    <article class="hombre-card mujer-item"><img src="https://images.unsplash.com/photo-1543163521-1bf539c55dd2?q=80&w=900" alt="Calzado para mujer"><div class="meta"><p>Calzado</p><h3>Paso firme con estilo</h3></div></article>
+                    <article class="hombre-card mujer-item"><img src="https://images.unsplash.com/photo-1551232864-3f0890e580d9?q=80&w=900" alt="Camisas para mujer"><div class="meta"><p>Camisas</p><h3>Corte elegante y versátil</h3><small>Básicas, estampadas y polo disponibles</small></div></article>
+                    <article class="hombre-card mujer-item"><img src="https://images.unsplash.com/photo-1475180098004-ca77a66827be?q=80&w=900" alt="Pantalones para mujer"><div class="meta"><p>Pantalones</p><h3>Denim, wide leg y jogger</h3><small>Jean mom fit, legging tiro alto y más</small></div></article>
+                    <article class="hombre-card mujer-item"><img src="https://images.unsplash.com/photo-1584917865442-de89df76afd3?q=80&w=900" alt="Bolso de mano para mujer"><div class="meta"><p>Accesorios</p><h3>Bolsos tote y riñoneras</h3><small>Lona estampada · cuero sintético</small></div></article>
+                    <article class="hombre-card mujer-item"><img src="https://images.unsplash.com/photo-1635767798638-3e25273a8236?q=80&w=900" alt="Cadenas para mujer"><div class="meta"><p>Accesorios</p><h3>Bufandas y pañuelos</h3><small>Lana mixta · seda estampada</small></div></article>
+                    <article class="hombre-card mujer-item"><img src="https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?q=80&w=900" alt="Joyería para mujer"><div class="meta"><p>Accesorios</p><h3>Gorras y gorros beanie</h3><small>Trucker denim · invierno tejido</small></div></article>
+                    <article class="hombre-card mujer-item"><img src="https://images.unsplash.com/photo-1602173574767-37ac01994b2a?q=80&w=900" alt="Pulseras para mujer"><div class="meta"><p>Accesorios</p><h3>Cinturones y guantes</h3><small>Cuero sintético · touch screen</small></div></article>
+                    <article class="hombre-card mujer-item"><img src="https://images.unsplash.com/photo-1591047139829-d91aecb6caea?q=80&w=900" alt="Sacos para mujer"><div class="meta"><p>Chaquetas</p><h3>Cardigan y bomber</h3><small>Lana crudo · negro satinado</small></div></article>
+                    <article class="hombre-card mujer-item"><img src="https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?q=80&w=900" alt="Vestidos para mujer"><div class="meta"><p>Vestidos</p><h3>Midi, largo y tubo</h3><small>Lino terracota · satinado · casual</small></div></article>
+                    <article class="hombre-card mujer-item"><img src="https://images.unsplash.com/photo-1496747611176-843222e1e57c?q=80&w=900" alt="Outfit femenino"><div class="meta"><p>Ropa deportiva</p><h3>Top, legging y conjunto yoga</h3><small>Soporte medio · compresión</small></div></article>
+                    <article class="hombre-card mujer-item"><img src="https://images.unsplash.com/photo-1543163521-1bf539c55dd2?q=80&w=900" alt="Falda para mujer"><div class="meta"><p>Vestidos</p><h3>Faldas midi y lápiz</h3><small>Plisada beige · lápiz negra</small></div></article>
 
-                    <article class="hombre-card mujer-item"><img src="https://images.unsplash.com/photo-1551232864-3f0890e580d9?q=80&w=900" alt="Camisas para mujer"><div class="meta"><p>Camisas</p><h3>Corte elegante y versátil</h3></div></article>
-                    <article class="hombre-card mujer-item"><img src="https://images.unsplash.com/photo-1475180098004-ca77a66827be?q=80&w=900" alt="Pantalones para mujer"><div class="meta"><p>Pantalones</p><h3>Comodidad con estilo diario</h3></div></article>
-                    <article class="hombre-card mujer-item"><img src="https://images.unsplash.com/photo-1584917865442-de89df76afd3?q=80&w=900" alt="Bolso de mano para mujer"><div class="meta"><p>Bolsos de mano</p><h3>Diseño chic y funcional</h3></div></article>
-                    <article class="hombre-card mujer-item"><img src="https://images.unsplash.com/photo-1635767798638-3e25273a8236?q=80&w=900" alt="Cadenas para mujer"><div class="meta"><p>Cadenas</p><h3>Brillo sutil que resalta</h3></div></article>
-                    <article class="hombre-card mujer-item"><img src="https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?q=80&w=900" alt="Joyería para mujer"><div class="meta"><p>Joyería</p><h3>Detalles finos para tu look</h3></div></article>
-                    <article class="hombre-card mujer-item"><img src="https://images.unsplash.com/photo-1602173574767-37ac01994b2a?q=80&w=900" alt="Pulseras para mujer"><div class="meta"><p>Pulseras</p><h3>Tendencia para cada ocasión</h3></div></article>
-                    <article class="hombre-card mujer-item"><img src="https://images.unsplash.com/photo-1591047139829-d91aecb6caea?q=80&w=900" alt="Sacos para mujer"><div class="meta"><p>Sacos</p><h3>Capas con estilo moderno</h3></div></article>
-                    <article class="hombre-card mujer-item"><img src="https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?q=80&w=900" alt="Vestidos para mujer"><div class="meta"><p>Vestidos</p><h3>Looks listos para destacar</h3></div></article>
-                    <article class="hombre-card mujer-item"><img src="https://images.unsplash.com/photo-1496747611176-843222e1e57c?q=80&w=900" alt="Outfit femenino"><div class="meta"><p>Outfits</p><h3>Combinaciones con personalidad</h3></div></article>
-                    <article class="hombre-card mujer-item"><img src="https://images.unsplash.com/photo-1543163521-1bf539c55dd2?q=80&w=900" alt="Calzado para mujer"><div class="meta"><p>Calzado</p><h3>Paso firme con estilo</h3></div></article>
+                    <article class="hombre-card mujer-item"><img src="https://images.unsplash.com/photo-1551232864-3f0890e580d9?q=80&w=900" alt="Camisas para mujer"><div class="meta"><p>Camisas</p><h3>Corte elegante y versátil</h3><small>Básicas, estampadas y polo disponibles</small></div></article>
+                    <article class="hombre-card mujer-item"><img src="https://images.unsplash.com/photo-1475180098004-ca77a66827be?q=80&w=900" alt="Pantalones para mujer"><div class="meta"><p>Pantalones</p><h3>Denim, wide leg y jogger</h3><small>Jean mom fit, legging tiro alto y más</small></div></article>
+                    <article class="hombre-card mujer-item"><img src="https://images.unsplash.com/photo-1584917865442-de89df76afd3?q=80&w=900" alt="Bolso de mano para mujer"><div class="meta"><p>Accesorios</p><h3>Bolsos tote y riñoneras</h3><small>Lona estampada · cuero sintético</small></div></article>
+                    <article class="hombre-card mujer-item"><img src="https://images.unsplash.com/photo-1635767798638-3e25273a8236?q=80&w=900" alt="Cadenas para mujer"><div class="meta"><p>Accesorios</p><h3>Bufandas y pañuelos</h3><small>Lana mixta · seda estampada</small></div></article>
+                    <article class="hombre-card mujer-item"><img src="https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?q=80&w=900" alt="Joyería para mujer"><div class="meta"><p>Accesorios</p><h3>Gorras y gorros beanie</h3><small>Trucker denim · invierno tejido</small></div></article>
+                    <article class="hombre-card mujer-item"><img src="https://images.unsplash.com/photo-1602173574767-37ac01994b2a?q=80&w=900" alt="Pulseras para mujer"><div class="meta"><p>Accesorios</p><h3>Cinturones y guantes</h3><small>Cuero sintético · touch screen</small></div></article>
+                    <article class="hombre-card mujer-item"><img src="https://images.unsplash.com/photo-1591047139829-d91aecb6caea?q=80&w=900" alt="Sacos para mujer"><div class="meta"><p>Chaquetas</p><h3>Cardigan y bomber</h3><small>Lana crudo · negro satinado</small></div></article>
+                    <article class="hombre-card mujer-item"><img src="https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?q=80&w=900" alt="Vestidos para mujer"><div class="meta"><p>Vestidos</p><h3>Midi, largo y tubo</h3><small>Lino terracota · satinado · casual</small></div></article>
+                    <article class="hombre-card mujer-item"><img src="https://images.unsplash.com/photo-1496747611176-843222e1e57c?q=80&w=900" alt="Outfit femenino"><div class="meta"><p>Ropa deportiva</p><h3>Top, legging y conjunto yoga</h3><small>Soporte medio · compresión</small></div></article>
+                    <article class="hombre-card mujer-item"><img src="https://images.unsplash.com/photo-1543163521-1bf539c55dd2?q=80&w=900" alt="Falda para mujer"><div class="meta"><p>Vestidos</p><h3>Faldas midi y lápiz</h3><small>Plisada beige · lápiz negra</small></div></article>
                 </div>
             </div>
         </section>
@@ -266,21 +320,40 @@
         <section id="accessories" class="px-6 md:px-12 lg:px-20 py-20 border-t border-neutral-200 reveal">
             <h2 class="text-3xl md:text-4xl font-medium mb-8">Accesorios</h2>
             <div class="grid md:grid-cols-3 gap-6">
-                <article class="scroll-card border border-neutral-200 rounded-xl p-5">
-                    <h3 class="text-xl mb-2">Bolsos de mano</h3>
-                    <p class="text-neutral-600 text-sm">Diseños elegantes para hombre y mujer.</p>
-                    <p class="mt-4 text-2xl">Desde $ 89.900 COP</p>
+
+                <article class="scroll-card" style="border:1px solid #e5e7eb;border-radius:14px;padding:18px 20px;display:flex;align-items:center;gap:18px;cursor:pointer;transition:border-color .2s,box-shadow .2s" onmouseover="this.style.borderColor='#111827';this.style.boxShadow='0 4px 20px rgba(0,0,0,.08)'" onmouseout="this.style.borderColor='#e5e7eb';this.style.boxShadow='none'" onclick="window.location.href='{{ route('store.catalog') }}'">
+                    <div style="flex:1;min-width:0">
+                        <h3 style="font-size:18px;font-weight:700;color:#111827;margin:0 0 6px">Bolsos de mano</h3>
+                        <p style="font-size:13px;color:#6b7280;margin:0 0 14px;line-height:1.5">Tote lona, riñoneras y bolsos de cuero sintético para hombre y mujer.</p>
+                        <p style="font-size:22px;font-weight:700;color:#111827;margin:0">Desde $ 45.900 <span style="font-size:13px;font-weight:400;color:#9ca3af">COP</span></p>
+                    </div>
+                    <img src="https://images.unsplash.com/photo-1544816155-12df9643f363?w=200&q=80&fit=crop"
+                         alt="Bolsos de mano"
+                         style="width:96px;height:96px;object-fit:cover;border-radius:12px;flex-shrink:0">
                 </article>
-                <article class="scroll-card border border-neutral-200 rounded-xl p-5">
-                    <h3 class="text-xl mb-2">Pulseras y cadenas</h3>
-                    <p class="text-neutral-600 text-sm">Detalles brillantes para complementar tus looks.</p>
-                    <p class="mt-4 text-2xl">Desde $ 45.900 COP</p>
+
+                <article class="scroll-card" style="border:1px solid #e5e7eb;border-radius:14px;padding:18px 20px;display:flex;align-items:center;gap:18px;cursor:pointer;transition:border-color .2s,box-shadow .2s" onmouseover="this.style.borderColor='#111827';this.style.boxShadow='0 4px 20px rgba(0,0,0,.08)'" onmouseout="this.style.borderColor='#e5e7eb';this.style.boxShadow='none'" onclick="window.location.href='{{ route('store.catalog') }}'">
+                    <div style="flex:1;min-width:0">
+                        <h3 style="font-size:18px;font-weight:700;color:#111827;margin:0 0 6px">Bufandas y gorros</h3>
+                        <p style="font-size:13px;color:#6b7280;margin:0 0 14px;line-height:1.5">Lana mixta, pañuelos de seda y gorros beanie para cada temporada.</p>
+                        <p style="font-size:22px;font-weight:700;color:#111827;margin:0">Desde $ 22.900 <span style="font-size:13px;font-weight:400;color:#9ca3af">COP</span></p>
+                    </div>
+                    <img src="https://images.unsplash.com/photo-1576871337622-98d48d1cf531?w=200&q=80&fit=crop"
+                         alt="Bufandas y gorros"
+                         style="width:96px;height:96px;object-fit:cover;border-radius:12px;flex-shrink:0">
                 </article>
-                <article class="scroll-card border border-neutral-200 rounded-xl p-5">
-                    <h3 class="text-xl mb-2">Aretes de temporada</h3>
-                    <p class="text-neutral-600 text-sm">Piezas en tendencia para ocasiones especiales.</p>
-                    <p class="mt-4 text-2xl">Desde $ 39.900 COP</p>
+
+                <article class="scroll-card" style="border:1px solid #e5e7eb;border-radius:14px;padding:18px 20px;display:flex;align-items:center;gap:18px;cursor:pointer;transition:border-color .2s,box-shadow .2s" onmouseover="this.style.borderColor='#111827';this.style.boxShadow='0 4px 20px rgba(0,0,0,.08)'" onmouseout="this.style.borderColor='#e5e7eb';this.style.boxShadow='none'" onclick="window.location.href='{{ route('store.catalog') }}'">
+                    <div style="flex:1;min-width:0">
+                        <h3 style="font-size:18px;font-weight:700;color:#111827;margin:0 0 6px">Cinturones y guantes</h3>
+                        <p style="font-size:13px;color:#6b7280;margin:0 0 14px;line-height:1.5">Cuero sintético marrón, guantes touch screen y medias deportivas pack x3.</p>
+                        <p style="font-size:22px;font-weight:700;color:#111827;margin:0">Desde $ 19.900 <span style="font-size:13px;font-weight:400;color:#9ca3af">COP</span></p>
+                    </div>
+                    <img src="https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=200&q=80&fit=crop"
+                         alt="Cinturones y guantes"
+                         style="width:96px;height:96px;object-fit:cover;border-radius:12px;flex-shrink:0">
                 </article>
+
             </div>
         </section>
 
@@ -321,8 +394,29 @@
     </footer>
 
     <script>
-        const header = document.getElementById('store-header');
-        const reveals = document.querySelectorAll('.reveal');
+        // ── Hacer clickeables todas las tarjetas → van a la tienda ───────
+        const TIENDA = '{{ route("store.catalog") }}';
+
+        // Tarjetas de Novedades (2 artículos grandes)
+        document.querySelectorAll('#products .scroll-card').forEach(card => {
+            card.style.cursor = 'pointer';
+            card.addEventListener('click', () => window.location.href = TIENDA);
+        });
+
+        // Carrusel Hombre y Mujer
+        document.querySelectorAll('.hombre-card').forEach(card => {
+            card.style.cursor = 'pointer';
+            card.addEventListener('click', () => window.location.href = TIENDA);
+        });
+
+        // Tarjetas de Accesorios
+        document.querySelectorAll('#accessories .scroll-card').forEach(card => {
+            card.style.cursor = 'pointer';
+            card.addEventListener('click', () => window.location.href = TIENDA);
+        });
+
+        const header    = document.getElementById('store-header');
+        const reveals   = document.querySelectorAll('.reveal');
         const scrollCards = document.querySelectorAll('.scroll-card');
         const heroTitle = document.getElementById('hero-center-title');
 
